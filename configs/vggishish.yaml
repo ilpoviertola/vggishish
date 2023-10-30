@@ -1,0 +1,34 @@
+# Default config for VGGishish model
+
+seed: 666
+log_dir: ./logs
+ckpt_path: ./logs/23-10-27T16-23-32/checkpoints/epoch=3-step=2556-val_loss=0.393.ckpt
+
+model:
+  conv_layers: [64, 64, 'MP', 128, 128, 'MP', 256, 256, 256, 'MP', 512, 512, 512, 'MP', 512, 512, 512]
+  use_bn: False
+  num_classes: 2
+  lr: 1e-4
+  weight_decay: 1e-4
+  betas: [0.9, 0.999]
+  batch_size: ${dataloader.batch_size}
+
+trainer:
+  accelerator: gpu
+  strategy: auto
+  devices: 1
+  precision: 16
+  min_epochs: 1
+  max_epochs: 50
+  # debug params
+  overfit_batches: 0
+
+dataloader:
+  data_dir: ./data/greatesthit-separated-actions/melspecs
+  split_dir: ./data/greatesthit-separated-actions
+  batch_size: 32
+  num_workers: 8
+  label_file: ./data/greatesthit-separated-actions/labels.json
+  pin_memory: True
+  # drop_last: True
+  # shuffle: True
